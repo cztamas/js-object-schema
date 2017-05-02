@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/EDMdesigner/superschema/issues"
   },
-  "homepage": "https://github.com/EDMdesigner/superschema#readme"
+  "homepage": "https://github.com/EDMdesigner/superschema#readme",
+  "dependencies": {
+    "knockout": "^3.4.2"
+  }
 }

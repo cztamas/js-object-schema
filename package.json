@@ -1,6 +1,6 @@
 {
   "name": "superschema",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "Awesome checking tool",
   "main": "src/index.js",
   "scripts": {
@@ -16,15 +16,14 @@
     "url": "https://github.com/EDMdesigner/superschema/issues"
   },
   "homepage": "https://github.com/EDMdesigner/superschema#readme",
-  "dependencies": {
-    "knockout": "^3.4.2"
-  },
+  "dependencies": {},
   "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-istanbul": "^1.1.1",
     "gulp-jasmine": "^2.4.2",
     "gulp-jshint": "^2.0.4",
     "jshint": "^2.9.4",
-    "jshint-stylish": "^2.2.1"
+    "jshint-stylish": "^2.2.1",
+    "knockout": "^3.4.2"
   }
 }

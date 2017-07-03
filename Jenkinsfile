@@ -10,7 +10,10 @@ pipeline {
         stage('test') {
             sh 'npm test'
         }
-        stage('build') {
+        stage('publish [global npm]') {
+            when {
+                branch "master"
+            }
             sh 'npm set init.author.name "edmdesigner-bot"'
             sh 'npm set init.author.email "info@edmdesigner.com"'
             withCredentials([string(credentialsId: 'edmdesigner-bot', variable: 'NPM_AUTH_TOKEN')]) {

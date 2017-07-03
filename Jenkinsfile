@@ -5,21 +5,27 @@ pipeline {
     }
     stages {
         stage('build') {
-            sh 'npm install'
+            steps {
+                sh 'npm install'
+            }
         }
         stage('test') {
-            sh 'npm test'
+            steps {
+                sh 'npm test'
+            }
         }
         stage('publish [global npm]') {
             when {
                 branch "master"
             }
-            sh 'npm set init.author.name "edmdesigner-bot"'
-            sh 'npm set init.author.email "info@edmdesigner.com"'
-            withCredentials([string(credentialsId: 'edmdesigner-bot', variable: 'NPM_AUTH_TOKEN')]) {
-                sh 'echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > ~/.npmrc'
+            steps {
+                sh 'npm set init.author.name "edmdesigner-bot"'
+                sh 'npm set init.author.email "info@edmdesigner.com"'
+                withCredentials([string(credentialsId: 'edmdesigner-bot', variable: 'NPM_AUTH_TOKEN')]) {
+                    sh 'echo "//registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN" > ~/.npmrc'
+                }
+                sh 'npm publish'
             }
-            sh 'npm publish'
         }
     }
     post {

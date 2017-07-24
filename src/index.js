@@ -121,3 +121,78 @@ module.exports = function(dependencies) {
 
 	return checkDependencies;
 };
+
+
+
+function checkPattern(item, pattern, name) {
+	if (typeof pattern === "object") {
+		return checkObjectPattern(item, pattern, name);
+	}
+	if (typeof pattern === "string") {
+		return checkStringPattern(item, pattern, name);
+	}
+	throw new Error("Invalid pattern: " + pattern);
+}
+
+function checkStringPattern(item, pattern, name) {
+	var currentType = pattern.split(" ")[0];
+	var remainingPattern = pattern.split(" ").slice(1).join(" ");
+	if (!typeCheckers[currentType]) {
+		throw new Error("Unknown type: " + currentType);
+	}
+	typeCheckers[currentType](item, name);
+	if (remainingPattern) {
+		if (currentType === "array") {
+			item.forEach(function(element, index) {
+				checkStringPattern(element, remainingPattern, name + "[" + index + "]");
+			});
+			return;
+		}
+
+		if (currentType === "observable") {
+			checkStringPattern(item(), remainingPattern, name + "()");
+			return;
+		}
+
+		throw new Error("Invalid pattern: " + pattern);
+	}
+}
+
+function checkObjectPattern(item, pattern, name) {
+	typeCheckers.object(item);
+}
+
+
+var koInstance;
+
+function createSimpleTypeChecker(type) {
+	return function(value, name) {
+		if (typeof value !== type) {
+			throw new Error("The " + name + " property should have " + type + " type!");
+		}
+	};
+}
+
+function checkArray(value, name) {
+	if (!Array.isArray(value)) {
+		throw new Error("The " + name + " property has to be an array!");
+	}
+}
+
+function checkObservable(value, name) {
+	if (!koInstance) {
+		throw new Error("Observable checking is not possible because no knockout instance is given!");
+	}
+	if (!koInstance.isObservable(value)) {
+		throw new Error("The '" + name + "' property has to be an observable!");
+	}
+}
+
+var typeCheckers = {
+	array: checkArray,
+	function: createSimpleTypeChecker("function"),
+	number: createSimpleTypeChecker("number"),
+	object: createSimpleTypeChecker("object"),
+	observable: checkObservable,
+	string: createSimpleTypeChecker("string")
+};

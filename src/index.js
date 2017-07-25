@@ -107,7 +107,6 @@ function checkObjectPattern(item, pattern, name) {
 					continue;
 				}
 				checkShorthandPattern(item, prop, pattern[prop], name);
-				//checkPattern(item[prop], pattern[prop], name + "." + prop);
 			}
 			return;
 		}

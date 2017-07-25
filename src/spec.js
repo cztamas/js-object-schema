@@ -525,7 +525,7 @@ describe("superschema tests", function() {
 			}).not.toThrow();
 			expect(function() {
 				check(testObject, pattern2, "myObject");
-			}).toThrowError("The value of myObject.g.g1 is not among the allowed ones!")
+			}).toThrowError("The value of myObject.g.g1 is not among the allowed ones!");
 		});
 	});
 

@@ -82,7 +82,8 @@ function checkObjectPattern(item, pattern, name) {
 				if (prop === "__type" || prop === "__required" || prop === "__nullable") {
 					continue;
 				}
-				checkPattern(item[prop], pattern[prop], name + "." + prop);
+				checkShorthandPattern(item, prop, pattern[prop], name);
+				//checkPattern(item[prop], pattern[prop], name + "." + prop);
 			}
 			return;
 		}
@@ -93,6 +94,19 @@ function checkObjectPattern(item, pattern, name) {
 			return;
 		}
 	}
+}
+
+function checkShorthandPattern(item, prop, pattern, name) {
+	var keys = prop.split(".");
+	var current = item;
+	keys.forEach(function(key) {
+		if (typeof current !== "object") {
+			throw new Error(name + " should have object type!");
+		}
+		current = current[key];
+		name += "." + key;
+	});
+	checkPattern(current, pattern, name);
 }
 
 function createSimpleTypeChecker(type) {
@@ -118,10 +132,24 @@ function checkObservable(value, name) {
 	}
 }
 
+function checkDate(value, name) {
+	if (!(value instanceof Date)) {
+		throw new Error(name + " has to be a date object!");
+	}
+}
+
+function checkHTMLElement(value, name) {
+	if (!(value instanceof HTMLElement)) {
+		throw new Error(name + " has to be an html element!");
+	}
+}
+
 var typeCheckers = {
 	array: checkArray,
 	boolean: createSimpleTypeChecker("boolean"),
+	date: checkDate,
 	function: createSimpleTypeChecker("function"),
+	HTMLElement: checkHTMLElement,
 	number: createSimpleTypeChecker("number"),
 	object: createSimpleTypeChecker("object"),
 	observable: checkObservable,

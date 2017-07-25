@@ -173,6 +173,17 @@ describe("superschema tests", function() {
 				check(testObject, pattern);
 			}).toThrowError("Observable checking is not possible because no knockout instance is given!");
 		});
+
+		it("throws error if __allowedValues property is not an array", function() {
+			var pattern = {
+				a: {
+					__allowedValues: "anything you can imagine"
+				}
+			};
+			expect(function() {
+				check(testObject, pattern);
+			}).toThrowError("Invalid pattern: the __allowedValues property always has to be an array!");
+		});
 	});
 
 	describe("simple string type definitions - without knockout", function() {
@@ -496,6 +507,25 @@ describe("superschema tests", function() {
 			expect(function() {
 				check(testObject, pattern3, "myObject");
 			}).toThrowError("myObject.m.m2 should have object type!");
+		});
+
+		it ("uses enums correctly", function() {
+			var pattern1 = {
+				"g.g1": {
+					__allowedValues: ["another string", "another beer"]
+				}
+			};
+			var pattern2 = {
+				"g.g1": {
+					__allowedValues: ["another wine", "another beer"]
+				}
+			};
+			expect(function() {
+				check(testObject, pattern1, "myObject");
+			}).not.toThrow();
+			expect(function() {
+				check(testObject, pattern2, "myObject");
+			}).toThrowError("The value of myObject.g.g1 is not among the allowed ones!")
 		});
 	});
 

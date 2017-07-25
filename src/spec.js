@@ -25,7 +25,9 @@ var testObject = {
 	i: true,
 	j: [1, 2, 3],
 	k: ko.observable(null),
-	l: null
+	l: null,
+	m: {},
+	n: new Date()
 };
 
 describe("superschema tests", function() {
@@ -222,7 +224,9 @@ describe("superschema tests", function() {
 				h: "function",
 				i: "boolean",
 				j: "array number",
-				k: "function"
+				k: "function",
+				m: "object",
+				n: "date"
 			};
 			expect(function() {
 				check(testObject, pattern);
@@ -239,12 +243,18 @@ describe("superschema tests", function() {
 		});
 
 		it ("throws error if a property has incorrect type", function() {
-			var pattern = {
+			var pattern1 = {
 				a: "number"
 			};
+			var pattern2 = {
+				b: "date"
+			};
 			expect(function() {
-				check(testObject, pattern, "myObject");
+				check(testObject, pattern1, "myObject");
 			}).toThrowError("myObject.a should have number type!");
+			expect(function() {
+				check(testObject, pattern2, "myObject");
+			}).toThrowError("myObject.b has to be a date object!");
 		});
 
 		it ("throws error if an element of an array has incorrect type", function() {
@@ -418,6 +428,27 @@ describe("superschema tests", function() {
 			expect(function() {
 				check(testObject, pattern, "myObject");
 			}).toThrowError("myObject.d[1] should have number type!");
+		});
+
+		it("uses nested object sorthand correctly", function() {
+			var pattern1 = {
+				"g.g2": "function"
+			};
+			var pattern2 = {
+				"g.g1": "number"
+			};
+			var pattern3 = {
+				"m.m2.xxx": "function"
+			};
+			expect(function() {
+				check(testObject, pattern1, "myObject");
+			}).not.toThrow();
+			expect(function() {
+				check(testObject, pattern2, "myObject");
+			}).toThrowError("myObject.g.g1 should have number type!");
+			expect(function() {
+				check(testObject, pattern3, "myObject");
+			}).toThrowError("myObject.m.m2 should have object type!");
 		});
 	});
 

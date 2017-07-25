@@ -82,6 +82,13 @@ function checkObjectPattern(item, pattern, name) {
 		}
 		return;
 	}
+	var allowedValues = pattern.__allowedValues;
+	if (allowedValues) {
+		if (!Array.isArray(allowedValues)) {
+			throw new Error("Invalid pattern: the __allowedValues property always has to be an array!")
+		}
+		return checkAllowedValues(item, allowedValues, name);
+	}
 	var type = pattern.__type;
 	type = type || "object"; // Object is the default type when using an object pattern format.
 	checkType(item, type, name);
@@ -111,6 +118,15 @@ function checkObjectPattern(item, pattern, name) {
 			return;
 		}
 	}
+}
+
+function checkAllowedValues(item, values, name) {
+	for (var i = 0; i < values.length; i += 1) {
+		if (item === values[i]) {
+			return;
+		}
+	}
+	throw new Error("The value of " + name + " is not among the allowed ones!");
 }
 
 function checkShorthandPattern(item, prop, pattern, name) {

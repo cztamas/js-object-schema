@@ -5,6 +5,8 @@ var superschema = require("./index.js");
 var check = superschema.check;
 
 var defaultName = "configObject";
+var nonRequiredName = "optional";
+var nullableName = "nullable";
 
 var testObject = {
 	a: "some string",
@@ -265,6 +267,15 @@ describe("superschema tests", function() {
 				check(testObject, pattern, "myObject");
 			}).toThrowError("myObject.d[1] should have number type!");
 		});
+
+		it("throws error if a non-nullable property has 'null' value", function() {
+			var pattern = {
+				l: "object"
+			};
+			expect(function() {
+				check(testObject, pattern, "myObject");
+			}).toThrowError("myObject.l shouldn't be null!");
+		});
 	});
 
 	describe("object format - without knockout", function() {
@@ -283,7 +294,7 @@ describe("superschema tests", function() {
 
 			it("doesn't throw error on missing non-required property - shorthand case", function() {
 				var pattern = {
-					xxx: "optional superhero"
+					xxx: nonRequiredName + " superhero"
 				};
 				expect(function() {
 					check(testObject, pattern);
@@ -316,7 +327,7 @@ describe("superschema tests", function() {
 
 			it("throws error if a non-required property has incorrect type - shorthand case", function() {
 				var pattern = {
-					a: "optional number"
+					a: nonRequiredName + " number"
 				};
 				expect(function() {
 					check(testObject, pattern, "myObject");
@@ -348,7 +359,7 @@ describe("superschema tests", function() {
 
 			it("doesn't throw error if a nullable property has 'null' value - shorthand case", function() {
 				var pattern = {
-					l: "nullable object"
+					l: nullableName + " object"
 				};
 				expect(function() {
 					check(testObject, pattern);
@@ -381,7 +392,7 @@ describe("superschema tests", function() {
 
 			it("throws error if a nullable property has incorrect type", function() {
 				var pattern = {
-					a: "nullable object"
+					a: nullableName + " object"
 				};
 				expect(function() {
 					check(testObject, pattern, "myObject");

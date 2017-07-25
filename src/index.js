@@ -85,7 +85,7 @@ function checkObjectPattern(item, pattern, name) {
 	var allowedValues = pattern.__allowedValues;
 	if (allowedValues) {
 		if (!Array.isArray(allowedValues)) {
-			throw new Error("Invalid pattern: the __allowedValues property always has to be an array!")
+			throw new Error("Invalid pattern: the __allowedValues property always has to be an array!");
 		}
 		return checkAllowedValues(item, allowedValues, name);
 	}

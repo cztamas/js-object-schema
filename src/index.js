@@ -33,9 +33,6 @@ function checkPattern(item, pattern, name) {
 function checkStringPattern(item, pattern, name) {
 	var currentType = pattern.split(" ")[0];
 	var remainingPattern = pattern.split(" ").slice(1).join(" ");
-	if (item === undefined) {
-		throw new Error(name + " is mandatory!");
-	}
 	if (currentType === nonRequiredName) {
 		if (item === undefined) {
 			return;
@@ -47,6 +44,12 @@ function checkStringPattern(item, pattern, name) {
 			return;
 		}
 		return checkStringPattern(item, remainingPattern, name);
+	}
+	if (item === undefined) {
+		throw new Error(name + " is mandatory!");
+	}
+	if (item === null) {
+		throw new Error(name + " shouldn't be null!");
 	}
 	checkType(item, currentType, name);
 	if (remainingPattern) {

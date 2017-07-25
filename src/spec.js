@@ -281,6 +281,15 @@ describe("superschema tests", function() {
 				}).not.toThrow();
 			});
 
+			it("doesn't throw error on missing non-required property - shorthand case", function() {
+				var pattern = {
+					xxx: "optional superhero"
+				};
+				expect(function() {
+					check(testObject, pattern);
+				}).not.toThrow();
+			});
+
 			it("throws error on missing required property", function() {
 				var pattern = {
 					xxx: {
@@ -299,6 +308,15 @@ describe("superschema tests", function() {
 						__required: false,
 						__type: "number"
 					}
+				};
+				expect(function() {
+					check(testObject, pattern, "myObject");
+				}).toThrowError("myObject.a should have number type!");
+			});
+
+			it("throws error if a non-required property has incorrect type - shorthand case", function() {
+				var pattern = {
+					a: "optional number"
 				};
 				expect(function() {
 					check(testObject, pattern, "myObject");
@@ -328,6 +346,15 @@ describe("superschema tests", function() {
 				}).not.toThrow();
 			});
 
+			it("doesn't throw error if a nullable property has 'null' value - shorthand case", function() {
+				var pattern = {
+					l: "nullable object"
+				};
+				expect(function() {
+					check(testObject, pattern);
+				}).not.toThrow();
+			});
+
 			it("throws error if a non-nullable property has 'null' value", function() {
 				var pattern = {
 					l: {
@@ -346,6 +373,15 @@ describe("superschema tests", function() {
 						__nullable: true,
 						__type: "object"
 					}
+				};
+				expect(function() {
+					check(testObject, pattern, "myObject");
+				}).toThrowError("myObject.a should have object type!");
+			});
+
+			it("throws error if a nullable property has incorrect type", function() {
+				var pattern = {
+					a: "nullable object"
 				};
 				expect(function() {
 					check(testObject, pattern, "myObject");

@@ -2,6 +2,8 @@
 
 var koInstance;
 var defaultName = "configObject";
+var nonRequiredName = "optional";
+var nullableName = "nullable";
 
 function extendSuperSchema(config) {
 	if (typeof config !== "object") {
@@ -33,6 +35,18 @@ function checkStringPattern(item, pattern, name) {
 	var remainingPattern = pattern.split(" ").slice(1).join(" ");
 	if (item === undefined) {
 		throw new Error(name + " is mandatory!");
+	}
+	if (currentType === nonRequiredName) {
+		if (item === undefined) {
+			return;
+		}
+		return checkStringPattern(item, remainingPattern, name);
+	}
+	if (currentType === nullableName) {
+		if (item === null) {
+			return;
+		}
+		return checkStringPattern(item, remainingPattern, name);
 	}
 	checkType(item, currentType, name);
 	if (remainingPattern) {
@@ -138,18 +152,11 @@ function checkDate(value, name) {
 	}
 }
 
-function checkHTMLElement(value, name) {
-	if (!(value instanceof HTMLElement)) {
-		throw new Error(name + " has to be an html element!");
-	}
-}
-
 var typeCheckers = {
 	array: checkArray,
 	boolean: createSimpleTypeChecker("boolean"),
 	date: checkDate,
 	function: createSimpleTypeChecker("function"),
-	HTMLElement: checkHTMLElement,
 	number: createSimpleTypeChecker("number"),
 	object: createSimpleTypeChecker("object"),
 	observable: checkObservable,

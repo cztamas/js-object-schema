@@ -1,4 +1,4 @@
-# superschema
+# Superschema
 
 A simple tool for checking JS types and object formats.
 
@@ -22,6 +22,7 @@ E.g. if your data should be an object with *username*, *id*, *registeredAt* prop
 	registeredAt: "date"
 }
 ```
+
 * Nested objects:
 you can type in deeper object hierarchies as they are, e.g.
 ```

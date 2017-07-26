@@ -55,7 +55,6 @@ if you want to check the type of elements in an array, you can use the
 }
 ```
 syntax - this means that the *purchase* prop has to be an array, and its elements should be objects with *time* and *id* properties.
-
 Or if your array element doesn't have to have some predefined substructure, you can use the `"array number"` and similar type definitions - it means that the array should have number-type elements.
 
 * Non-mandatory and nullable properties:
@@ -88,7 +87,6 @@ If a property can only have one of a collection of given values, you give the al
 
 * KnockoutJS observables:
 To check knockout observable types, you should call the `superschema.extend({ knockout: yourKnockoutInstance})` function - here of course `yourKnockoutInstance` should be the knockout instance used in your code. (This is because superschema uses ko's own isObservable function for typechecking). You have to call this only once in your code.
-
 After that, you can use the "observable" type, e.g. the pattern
 ```
 {

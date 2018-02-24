@@ -1,21 +1,21 @@
 {
-  "name": "superschema",
-  "version": "0.3.0",
-  "description": "JS typechecking tool, also supports KnockoutJS observables",
+  "name": "js-object-schema",
+  "version": "0.1.0",
+  "description": "JS typechecking tool, supports DOM elements and KnockoutJS observables - forked from EDMdesigner/superschema",
   "main": "src/index.js",
   "scripts": {
     "test": "gulp test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EDMdesigner/superschema.git"
+    "url": "git+https://github.com/cztamas/superschema.git"
   },
   "author": "cztamas",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/EDMdesigner/superschema/issues"
+    "url": "https://github.com/cztamas/superschema/issues"
   },
-  "homepage": "https://github.com/EDMdesigner/superschema#readme",
+  "homepage": "https://github.com/cztamas/superschema#readme",
   "dependencies": {},
   "devDependencies": {
     "gulp": "^3.9.1",

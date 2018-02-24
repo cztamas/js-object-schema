@@ -1,6 +1,7 @@
 "use strict";
 
 var koInstance;
+var windowInstance;
 var defaultName = "configObject";
 var nonRequiredName = "optional";
 var nullableName = "nullable";
@@ -10,13 +11,19 @@ function extendSuperSchema(config) {
 		throw new Error("'config' has to be an object!");
 	}
 	var ko = config.knockout || config.ko;
-	if (!ko) {
-		throw new Error("superschema.extend called without any known parameters!");
+	var window = config.window;
+	if (ko) {
+		if (typeof ko !== "object" || typeof ko.isObservable !== "function") {
+			throw new Error("Invalid 'knockout' parameter given!");
+		}
+		koInstance = ko;
 	}
-	if (typeof ko !== "object" || typeof ko.isObservable !== "function") {
-		throw new Error("Invalid 'knockout' parameter given!");
+	if (window) {
+		if (typeof window !== "object" || typeof window.HTMLElement !== "function") {
+			throw new Error("Invalid 'window' parameter given!");
+		}
+		windowInstance = window;
 	}
-	koInstance = ko;
 }
 
 function checkPattern(item, pattern, name) {
@@ -162,6 +169,14 @@ function checkObservable(value, name) {
 		throw new Error(name + " has to be an observable!");
 	}
 }
+function checkDomNode(value, name) {
+	if (!windowInstance) {
+		throw new Error("DOM node checking is not possible because no window instance is given!");
+	}
+	if (!(value instanceof windowInstance.HTMLElement)) {
+		throw new Error(name + " has to be a DOM element!");
+	}
+}
 
 function checkDate(value, name) {
 	if (!(value instanceof Date)) {
@@ -173,6 +188,8 @@ var typeCheckers = {
 	array: checkArray,
 	boolean: createSimpleTypeChecker("boolean"),
 	date: checkDate,
+	domNode: checkDomNode,
+	DOMNode: checkDomNode,
 	function: createSimpleTypeChecker("function"),
 	number: createSimpleTypeChecker("number"),
 	object: createSimpleTypeChecker("object"),

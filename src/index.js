@@ -101,17 +101,16 @@ function checkObjectPattern(item, pattern, name) {
 			}
 			return;
 		}
+		case "observable":
+		case "function":
 		case "object": {
 			for (var prop in pattern) {
-				if (prop === "__type" || prop === "__required" || prop === "__nullable") {
+				if (prop === "__type" || prop === "__required" || prop === "__nullable" || prop === "__value") {
 					continue;
 				}
 				checkShorthandPattern(item, prop, pattern[prop], name);
 			}
-			return;
-		}
-		case "observable": {
-			if (pattern.__value) {
+			if (type === "observable" && pattern.__value) {
 				checkPattern(item(), pattern.__value, name + "()");
 			}
 			return;

@@ -1,4 +1,4 @@
-# Superschema
+# JS-object-schema
 
 A simple tool for checking JS types and object formats.
 
@@ -8,7 +8,7 @@ The currently supported types are *boolean*, *number*, *string*, *array*, *funct
 
 ## Usage
 
-After requiring the `superschema` module, you can use the `superschema.check(data, pattern, name)` function.
+After requiring the `js-object-schema` module, you can use the `objectSchema.check(data, pattern, name)` function.
 Here `data` is the data you want to typecheck, `pattern` defines the type pattern your data should conform to. The check function will throw an error if the data doesn't correspond to the given type, and will use `name` in the error message to make it more informative (it defaults to '*configObject*' if `name` is not given).
 
 ### Pattern syntax
@@ -86,7 +86,7 @@ If a property can only have one of a collection of given values, you give the al
 ```
 
 * KnockoutJS observables:
-To check knockout observable types, you should call the `superschema.extend({ knockout: yourKnockoutInstance})` function - here of course `yourKnockoutInstance` should be the knockout instance used in your code. (This is because superschema uses ko's own isObservable function for typechecking). You have to call this only once in your code.
+To check knockout observable types, you should call the `objectSchema.extend({ knockout: yourKnockoutInstance})` function - here of course `yourKnockoutInstance` should be the knockout instance used in your code. (This is because JS-object-schema uses ko's own isObservable function for typechecking). You have to call this only once in your code.
 After that, you can use the "observable" type, e.g. the pattern
 ```
 {
